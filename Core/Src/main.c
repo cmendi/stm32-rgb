@@ -120,8 +120,6 @@ int main(void)
 
 		  if(HAL_GetTick() - lastPressTime > DEBOUNCE_DELAY) {
 
-			  lastPressTime = HAL_GetTick();
-
 			  if (!isOn) {
 
 				  isOn = true;
