@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdbool.h>
 
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -95,7 +96,11 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // Green
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4); // Blue
 
-  int mode = 1;
+
+  const int DEBOUNCE_DELAY = 400; // debounce delay in milliseconds
+  uint32_t currentMillis;
+  uint32_t lastPressTime = 0;
+  int mode = 0;
   bool isOn = false;
 
 
@@ -108,122 +113,136 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  // Store the current Milliseconds to currentMillis variable
+	  currentMillis = HAL_GetTick();
+
 	  if (HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin) == GPIO_PIN_SET) {
 
+		  if(HAL_GetTick() - lastPressTime > DEBOUNCE_DELAY) {
 
+			  lastPressTime = HAL_GetTick();
 
+			  if (!isOn) {
 
-		  if (HAL_GPIO_ReadPin(Main_input_GPIO_Port, Main_input_Pin) == GPIO_PIN_SET) {
+				  isOn = true;
 
-			  isOn = true;
+			  } else {
 
-			  	  if (isOn) {
+				  mode++;
 
-					  if (mode == 1) {
-						  // Red Final (230)
-						  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-						  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-						  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-					  } else if (mode == 2) {
-						  // Green Final (230)
-						  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-						  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
-						  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-					  } else if (mode == 3) {
-						  // Blue Final (230)
-						  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-						  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-						  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
-					  }
-		//				  // Pink Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Teal Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Yellow Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 140); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Orange Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 25); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Purple FInal (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 100); // Blue
-		//				  HAL_Delay(1000);
-		//				  // White Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
-		//				  HAL_Delay(1000);
-					  }
+				  if(mode > 3) {
 
-		//			  else {
-		//				// Turn on LEDs brightness to 110 out of 255
-		//				  // Red Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Green Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Blue Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Pink Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 25); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Teal Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Yellow Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 120); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Orange Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 13); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-		//				  HAL_Delay(1000);
-		//				  // Purple FInal (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
-		//				  HAL_Delay(1000);
-		//				  // White Final (230)
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
-		//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
-		//				  HAL_Delay(1000);
-		//			  }
+					  mode = 1;
+
+				  }
+			  }
 		  }
-	  } else {
-		  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-		  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-		  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+
+	  } else if (HAL_GPIO_ReadPin(Main_input_GPIO_Port, Main_input_Pin) == GPIO_PIN_SET) {
+
+	  	  if (isOn) {
+
+			  if (mode == 1) {
+				  // Red Final (230)
+				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+			  } else if (mode == 2) {
+				  // Green Final (230)
+				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
+				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+			  } else if (mode == 3) {
+				  // Blue Final (230)
+				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
+			  }
+//				  // Pink Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
+//				  HAL_Delay(1000);
+//				  // Teal Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
+//				  HAL_Delay(1000);
+//				  // Yellow Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 140); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+//				  HAL_Delay(1000);
+//				  // Orange Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 25); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+//				  HAL_Delay(1000);
+//				  // Purple FInal (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 100); // Blue
+//				  HAL_Delay(1000);
+//				  // White Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
+//				  HAL_Delay(1000);
+			  }
+
+//			  else {
+//				// Turn on LEDs brightness to 110 out of 255
+//				  // Red Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+//				  HAL_Delay(1000);
+//				  // Green Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+//				  HAL_Delay(1000);
+//				  // Blue Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
+//				  HAL_Delay(1000);
+//				  // Pink Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 25); // Blue
+//				  HAL_Delay(1000);
+//				  // Teal Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
+//				  HAL_Delay(1000);
+//				  // Yellow Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 120); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+//				  HAL_Delay(1000);
+//				  // Orange Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 13); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+//				  HAL_Delay(1000);
+//				  // Purple FInal (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
+//				  HAL_Delay(1000);
+//				  // White Final (230)
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
+//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
+//				  HAL_Delay(1000);
+//			  }
 	  }
 
 
   }
+
   /* USER CODE END 3 */
 }
 
