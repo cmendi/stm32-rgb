@@ -122,73 +122,76 @@ int main(void)
   // The color to show next
   static uint8_t color_sequence = 0;
 
-  int i = 0;
-  //
-  //
-  //
-  //void red_sequence(void) {
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-  //};
-  //
-  //void green_sequence(void) {
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-  //};
-  //
-  //void blue_sequence(void) {
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
-  //};
-  //
-  //void pink_sequence(void) {
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
-  //};
-  //
-  //void teal_sequence(void) {
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
-  //};
-  //
-  //void yellow_sequence(void) {
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 140); // Green
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-  //
-  //};
-  //
-  //void orange_sequence(void) {
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 25); // Green
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-  //};
-  //
-  //void purple_sequence(void) {
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 100); // Blue
-  //};
-  //
-  //void white_sequence(void) {
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
-  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
-  //};
+
+
+  void red_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  };
+
+  void green_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  };
+
+  void blue_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
+  };
+
+  void pink_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
+  };
+
+  void teal_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
+  };
+
+  void yellow_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 140); // Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+
+  };
+
+  void orange_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 25); // Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  };
+
+  void purple_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 100); // Blue
+  };
+
+  void white_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
+  };
 
   void party_sequence(void) {
-  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sins[i]); //Red
-  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, sins[(i + 120) % 360]); //Green
-  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, sins[(i + 240) % 360]); //Blue
 
-  	  i = (i + 1) % 360;
+      int i = 0;
 
-      HAL_Delay(2);
+      while (HAL_GPIO_ReadPin(Toggle_Switch_GPIO_Port, Toggle_Switch_Pin) == GPIO_PIN_SET) { // Infinite loop to keep the party_sequence running
+          for (i = 0; i < 360; i++) {
+              __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sins[i]); // Red
+              __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, sins[(i + 120) % 360]); // Green
+              __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, sins[(i + 240) % 360]); // Blue
+
+              HAL_Delay(2);
+          }
+      }
   };
 
   void switch_off_all_leds(void)
@@ -224,39 +227,39 @@ int main(void)
 
 	                switch (color_sequence) {
 
-//                    case 0:
-//                        red_sequence();
-//                        break;
-//                    case 1:
-//                        green_sequence();
-//                        break;
-//                    case 2:
-//                        blue_sequence();
-//                        break;
-//                    case 3:
-//                        pink_sequence();
-//                        break;
-//                    case 4:
-//                        teal_sequence();
-//                        break;
-//                    case 5:
-//                        yellow_sequence();
-//                        break;
-//                    case 6:
-//                        orange_sequence();
-//                        break;
-//                    case 7:
-//                        purple_sequence();
-//                        break;
-//                    case 8:
-//                        white_sequence();
-//                        break;
                     case 0:
+                        red_sequence();
+                        break;
+                    case 1:
+                        green_sequence();
+                        break;
+                    case 2:
+                        blue_sequence();
+                        break;
+                    case 3:
+                        pink_sequence();
+                        break;
+                    case 4:
+                        teal_sequence();
+                        break;
+                    case 5:
+                        yellow_sequence();
+                        break;
+                    case 6:
+                        orange_sequence();
+                        break;
+                    case 7:
+                        purple_sequence();
+                        break;
+                    case 8:
+                        white_sequence();
+                        break;
+                    case 9:
                         party_sequence();
                         break;
 	                }
 
-	                color_sequence = (color_sequence + 1) % 1;
+	                color_sequence = (color_sequence + 1) % 10;
 	            }
 	            else
 	                button_state = BUTTON_NOT_PRESSED;
