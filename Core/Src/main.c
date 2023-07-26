@@ -110,7 +110,6 @@ int main(void)
 		52,54,56,58,59,61,63,65,67,69,71,73,75,77,79,81,83,85,88,90,92,94,96,98,100,103,105,107,109,111,114,116,118,120,123,125
 	};
 
-  // Track the current state of the button
   enum button_state_e {
       BUTTON_NOT_PRESSED,
       BUTTON_JUST_PRESSED,
@@ -118,8 +117,6 @@ int main(void)
   };
 
   static enum button_state_e button_state = BUTTON_NOT_PRESSED;
-
-  // The color to show next
   static uint8_t color_sequence = 0;
 
 
@@ -158,7 +155,6 @@ int main(void)
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 140); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-
   };
 
   void orange_sequence(void) {
@@ -183,13 +179,16 @@ int main(void)
 
       int i = 0;
 
-      while (HAL_GPIO_ReadPin(Toggle_Switch_GPIO_Port, Toggle_Switch_Pin) == GPIO_PIN_SET) { // Infinite loop to keep the party_sequence running
+      while (1) { // Infinite loop to keep the party_sequence running
           for (i = 0; i < 360; i++) {
               __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sins[i]); // Red
               __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, sins[(i + 120) % 360]); // Green
               __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, sins[(i + 240) % 360]); // Blue
 
               HAL_Delay(2);
+
+              if (HAL_GPIO_ReadPin(Toggle_Switch_GPIO_Port, Toggle_Switch_Pin) != GPIO_PIN_SET)
+                    return;
           }
       }
   };
