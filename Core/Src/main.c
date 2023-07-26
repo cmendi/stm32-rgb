@@ -60,6 +60,7 @@ static void MX_TIM3_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
 /* USER CODE END 0 */
 
 /**
@@ -96,13 +97,106 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // Green
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4); // Blue
 
+	uint8_t sins[360] = {
+		127,129,131,134,136,138,140,143,145,147,149,151,154,156,158,160,162,164,166,169,171,173,175,177,179,181,183,185,187,189,191,193,195,196,198,200,
+		202,204,205,207,209,211,212,214,216,217,219,220,222,223,225,226,227,229,230,231,233,234,235,236,237,239,240,241,242,243,243,244,245,246,247,248,
+		248,249,250,250,251,251,252,252,253,253,253,254,254,254,254,254,254,254,255,254,254,254,254,254,254,254,253,253,253,252,252,251,251,250,250,249,
+		248,248,247,246,245,244,243,243,242,241,240,239,237,236,235,234,233,231,230,229,227,226,225,223,222,220,219,217,216,214,212,211,209,207,205,204,
+		202,200,198,196,195,193,191,189,187,185,183,181,179,177,175,173,171,169,166,164,162,160,158,156,154,151,149,147,145,143,140,138,136,134,131,129,
+		127,125,123,120,118,116,114,111,109,107,105,103,100,98,96,94,92,90,88,85,83,81,79,77,75,73,71,69,67,65,63,61,59,58,56,54,
+		52,50,49,47,45,43,42,40,38,37,35,34,32,31,29,28,27,25,24,23,21,20,19,18,17,15,14,13,12,11,11,10,9,8,7,6,
+		6,5,4,4,3,3,2,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,3,3,4,4,5,
+		6,6,7,8,9,10,11,11,12,13,14,15,17,18,19,20,21,23,24,25,27,28,29,31,32,34,35,37,38,40,42,43,45,47,49,50,
+		52,54,56,58,59,61,63,65,67,69,71,73,75,77,79,81,83,85,88,90,92,94,96,98,100,103,105,107,109,111,114,116,118,120,123,125
+	};
 
-  const int DEBOUNCE_DELAY = 400; // debounce delay in milliseconds
-  uint32_t currentMillis;
-  uint32_t lastPressTime = 0;
-  int mode = 0;
-  bool isOn = false;
+  // Track the current state of the button
+  enum button_state_e {
+      BUTTON_NOT_PRESSED,
+      BUTTON_JUST_PRESSED,
+      BUTTON_PRESSED
+  };
 
+  static enum button_state_e button_state = BUTTON_NOT_PRESSED;
+
+  // The color to show next
+  static uint8_t color_sequence = 0;
+
+  int i = 0;
+  //
+  //
+  //
+  //void red_sequence(void) {
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  //};
+  //
+  //void green_sequence(void) {
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  //};
+  //
+  //void blue_sequence(void) {
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
+  //};
+  //
+  //void pink_sequence(void) {
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
+  //};
+  //
+  //void teal_sequence(void) {
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
+  //};
+  //
+  //void yellow_sequence(void) {
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 140); // Green
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  //
+  //};
+  //
+  //void orange_sequence(void) {
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 25); // Green
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  //};
+  //
+  //void purple_sequence(void) {
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 100); // Blue
+  //};
+  //
+  //void white_sequence(void) {
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
+  //	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
+  //};
+
+  void party_sequence(void) {
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sins[i]); //Red
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, sins[(i + 120) % 360]); //Green
+  	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, sins[(i + 240) % 360]); //Blue
+
+  	  i = (i + 1) % 360;
+
+      HAL_Delay(2);
+  };
+
+  void switch_off_all_leds(void)
+  {
+      __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+      __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+      __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  };
 
   /* USER CODE END 2 */
 
@@ -113,131 +207,71 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  // Store the current Milliseconds to currentMillis variable
-	  currentMillis = HAL_GetTick();
 
-	  if (HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin) == GPIO_PIN_SET) {
+	 bool pressed = (HAL_GPIO_ReadPin(Toggle_Switch_GPIO_Port, Toggle_Switch_Pin) == GPIO_PIN_SET);
 
-		  if(HAL_GetTick() - lastPressTime > DEBOUNCE_DELAY) {
+	    switch (button_state)
+	    {
+	        case BUTTON_NOT_PRESSED:
+	            if (pressed)
+	                button_state = BUTTON_JUST_PRESSED;
+	            break;
 
-			  if (!isOn) {
+	        case BUTTON_JUST_PRESSED:
+	            if (pressed)
+	            {
+	                button_state = BUTTON_PRESSED;
 
-				  isOn = true;
+	                switch (color_sequence) {
 
-			  } else {
+//                    case 0:
+//                        red_sequence();
+//                        break;
+//                    case 1:
+//                        green_sequence();
+//                        break;
+//                    case 2:
+//                        blue_sequence();
+//                        break;
+//                    case 3:
+//                        pink_sequence();
+//                        break;
+//                    case 4:
+//                        teal_sequence();
+//                        break;
+//                    case 5:
+//                        yellow_sequence();
+//                        break;
+//                    case 6:
+//                        orange_sequence();
+//                        break;
+//                    case 7:
+//                        purple_sequence();
+//                        break;
+//                    case 8:
+//                        white_sequence();
+//                        break;
+                    case 0:
+                        party_sequence();
+                        break;
+	                }
 
-				  mode++;
+	                color_sequence = (color_sequence + 1) % 1;
+	            }
+	            else
+	                button_state = BUTTON_NOT_PRESSED;
+	            break;
 
-				  if(mode > 3) {
+	        case BUTTON_PRESSED:
+	            if (!pressed)
+	            {
+	                button_state = BUTTON_NOT_PRESSED;
+	                switch_off_all_leds();
+	            }
+	            break;
+	    }
 
-					  mode = 1;
-
-				  }
-			  }
-		  }
-
-	  } else if (HAL_GPIO_ReadPin(Main_input_GPIO_Port, Main_input_Pin) == GPIO_PIN_SET) {
-
-	  	  if (isOn) {
-
-			  if (mode == 1) {
-				  // Red Final (230)
-				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-			  } else if (mode == 2) {
-				  // Green Final (230)
-				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
-				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-			  } else if (mode == 3) {
-				  // Blue Final (230)
-				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
-			  }
-//				  // Pink Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
-//				  HAL_Delay(1000);
-//				  // Teal Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
-//				  HAL_Delay(1000);
-//				  // Yellow Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 140); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-//				  HAL_Delay(1000);
-//				  // Orange Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 25); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-//				  HAL_Delay(1000);
-//				  // Purple FInal (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 100); // Blue
-//				  HAL_Delay(1000);
-//				  // White Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
-//				  HAL_Delay(1000);
-			  }
-
-//			  else {
-//				// Turn on LEDs brightness to 110 out of 255
-//				  // Red Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-//				  HAL_Delay(1000);
-//				  // Green Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-//				  HAL_Delay(1000);
-//				  // Blue Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
-//				  HAL_Delay(1000);
-//				  // Pink Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 25); // Blue
-//				  HAL_Delay(1000);
-//				  // Teal Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
-//				  HAL_Delay(1000);
-//				  // Yellow Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 120); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-//				  HAL_Delay(1000);
-//				  // Orange Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 13); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
-//				  HAL_Delay(1000);
-//				  // Purple FInal (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
-//				  HAL_Delay(1000);
-//				  // White Final (230)
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
-//				  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
-//				  HAL_Delay(1000);
-//			  }
-	  }
-
+	    HAL_Delay(10); // delay 10 ms to make debounce work
 
   }
 
@@ -353,20 +387,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Button_GPIO_Port, Button_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(Toggle_Switch_GPIO_Port, Toggle_Switch_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : Button_Pin */
-  GPIO_InitStruct.Pin = Button_Pin;
+  /*Configure GPIO pin : Toggle_Switch_Pin */
+  GPIO_InitStruct.Pin = Toggle_Switch_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(Button_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : Main_input_Pin */
-  GPIO_InitStruct.Pin = Main_input_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(Main_input_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(Toggle_Switch_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
