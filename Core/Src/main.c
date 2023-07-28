@@ -94,6 +94,8 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
+	// EEPROM Flash address 0x08000000
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
