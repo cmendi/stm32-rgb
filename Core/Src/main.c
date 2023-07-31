@@ -215,6 +215,70 @@ int main(void)
               HAL_Delay(2);
 
               if (HAL_GPIO_ReadPin(Toggle_Switch_GPIO_Port, Toggle_Switch_Pin) != GPIO_PIN_SET)
+                  return;
+          }
+      }
+  };
+
+  void red_sequence_half() {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  }
+  void green_sequence_half() {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  }
+  void blue_sequence_half() {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
+  }
+  void pink_sequence_half() {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 25); // Blue
+  }
+  void teal_sequence_half() {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
+  }
+  void yellow_sequence_half() {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 120); // Green
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  }
+  void orange_sequence_half() {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 13); // Green
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
+  }
+  void purple_sequence_half() {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
+  }
+  void white_sequence_half() {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 115); // Red
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 115); // Green
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 115); // Blue
+  }
+
+  void party_sequence_half(void) {
+
+      int i = 0;
+
+      while (1) { // Infinite loop to keep the party_sequence running
+          for (i = 0; i < 360; i++) {
+              __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sins[i] / 2); // Red
+              __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, sins[(i + 120) % 360] / 2); // Green
+              __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, sins[(i + 240) % 360] / 2); // Blue
+
+              HAL_Delay(2);
+
+              if (HAL_GPIO_ReadPin(Toggle_Switch_GPIO_Port, Toggle_Switch_Pin) != GPIO_PIN_SET)
                     return;
           }
       }
