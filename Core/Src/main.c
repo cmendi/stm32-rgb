@@ -148,61 +148,61 @@ int main(void)
 
 
 
-  void red_sequence(void) {
+  void red_sequence_full(void) {
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
   };
 
-  void green_sequence(void) {
+  void green_sequence_full(void) {
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
   };
 
-  void blue_sequence(void) {
+  void blue_sequence_full(void) {
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
   };
 
-  void pink_sequence(void) {
+  void pink_sequence_full(void) {
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 50); // Blue
   };
 
-  void teal_sequence(void) {
+  void teal_sequence_full(void) {
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 0); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
   };
 
-  void yellow_sequence(void) {
+  void yellow_sequence_full(void) {
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 140); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
   };
 
-  void orange_sequence(void) {
+  void orange_sequence_full(void) {
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 25); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 0); // Blue
   };
 
-  void purple_sequence(void) {
+  void purple_sequence_full(void) {
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 100); // Blue
   };
 
-  void white_sequence(void) {
+  void white_sequence_full(void) {
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 230); // Red
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 230); // Green
   	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 230); // Blue
   };
 
-  void party_sequence(void) {
+  void party_sequence_full(void) {
 
       int i = 0;
 
@@ -257,34 +257,34 @@ int main(void)
 	                switch (color_sequence) {
 
                     case 0:
-                        red_sequence();
+                        red_sequence_full();
                         break;
                     case 1:
-                        green_sequence();
+                        green_sequence_full();
                         break;
                     case 2:
-                        blue_sequence();
+                        blue_sequence_full();
                         break;
                     case 3:
-                        pink_sequence();
+                        pink_sequence_full();
                         break;
                     case 4:
-                        teal_sequence();
+                        teal_sequence_full();
                         break;
                     case 5:
-                        yellow_sequence();
+                        yellow_sequence_full();
                         break;
                     case 6:
-                        orange_sequence();
+                        orange_sequence_full();
                         break;
                     case 7:
-                        purple_sequence();
+                        purple_sequence_full();
                         break;
                     case 8:
-                        white_sequence();
+                        white_sequence_full();
                         break;
                     case 9:
-                        party_sequence();
+                        party_sequence_full();
                         break;
 	                }
 	            }
@@ -302,7 +302,7 @@ int main(void)
 	            break;
 	    }
 
-	    HAL_Delay(10); // delay 10 ms to make debounce work
+	    HAL_Delay(10);
 
   }
 
