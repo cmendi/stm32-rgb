@@ -206,7 +206,7 @@ int main(void)
 
       int i = 0;
 
-      while (1) { // Infinite loop to keep the party_sequence running
+      while (1) {
           for (i = 0; i < 360; i++) {
               __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sins[i]); // Red
               __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, sins[(i + 120) % 360]); // Green
@@ -270,7 +270,7 @@ int main(void)
 
       int i = 0;
 
-      while (1) { // Infinite loop to keep the party_sequence running
+      while (1) {
           for (i = 0; i < 360; i++) {
               __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, sins[i] / 2); // Red
               __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, sins[(i + 120) % 360] / 2); // Green
@@ -303,12 +303,15 @@ int main(void)
 
 	 bool pressed = (HAL_GPIO_ReadPin(Toggle_Switch_GPIO_Port, Toggle_Switch_Pin) == GPIO_PIN_SET);
 
+	 if(HAL_GPIO_ReadPin(Main_input_GPIO_Port, Main_input_Pin) == GPIO_PIN_SET) {
+
 	    switch (button_state)
 	    {
 	        case BUTTON_NOT_PRESSED:
 	            if (pressed)
 	                button_state = BUTTON_JUST_PRESSED;
 	            break;
+
 
 	        case BUTTON_JUST_PRESSED:
 	            if (pressed)
@@ -365,6 +368,75 @@ int main(void)
 	            }
 	            break;
 	    }
+
+	 } else {
+
+		    switch (button_state)
+		    {
+		        case BUTTON_NOT_PRESSED:
+		            if (pressed)
+		                button_state = BUTTON_JUST_PRESSED;
+		            break;
+
+
+		        case BUTTON_JUST_PRESSED:
+		            if (pressed)
+		            {
+		                button_state = BUTTON_PRESSED;
+
+		                if ((HAL_GetTick() - led_off_tick) < 2000u)
+		                    color_sequence = (color_sequence + 1) % 10;
+
+		                switch (color_sequence) {
+
+	                    case 0:
+	                        red_sequence_half();
+	                        break;
+	                    case 1:
+	                        green_sequence_half();
+	                        break;
+	                    case 2:
+	                        blue_sequence_half();
+	                        break;
+	                    case 3:
+	                        pink_sequence_half();
+	                        break;
+	                    case 4:
+	                        teal_sequence_half();
+	                        break;
+	                    case 5:
+	                        yellow_sequence_half();
+	                        break;
+	                    case 6:
+	                        orange_sequence_half();
+	                        break;
+	                    case 7:
+	                        purple_sequence_half();
+	                        break;
+	                    case 8:
+	                        white_sequence_half();
+	                        break;
+	                    case 9:
+	                        party_sequence_half();
+	                        break;
+		                }
+		            }
+		            else
+		                button_state = BUTTON_NOT_PRESSED;
+		            break;
+
+		        case BUTTON_PRESSED:
+		            if (!pressed)
+		            {
+		                button_state = BUTTON_NOT_PRESSED;
+		                switch_off_all_leds();
+		                led_off_tick = HAL_GetTick();
+		            }
+
+		            break;
+		    }
+
+	 }
 
 	    HAL_Delay(10);
 
@@ -490,6 +562,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(Toggle_Switch_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Main_input_Pin */
+  GPIO_InitStruct.Pin = Main_input_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(Main_input_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

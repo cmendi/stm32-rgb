@@ -63,6 +63,8 @@ void Error_Handler(void);
 #define Toggle_Switch_GPIO_Port GPIOA
 #define BLUE_PIN_Pin GPIO_PIN_1
 #define BLUE_PIN_GPIO_Port GPIOB
+#define Main_input_Pin GPIO_PIN_15
+#define Main_input_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
