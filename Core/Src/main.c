@@ -94,8 +94,6 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
-	// EEPROM Flash address 0x08000000
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -301,6 +299,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
+	  // Check to see if Main_input is seeing 12v or 24v
 	 bool pressed = (HAL_GPIO_ReadPin(Toggle_Switch_GPIO_Port, Toggle_Switch_Pin) == GPIO_PIN_SET);
 
 	 if(HAL_GPIO_ReadPin(Main_input_GPIO_Port, Main_input_Pin) == GPIO_PIN_SET) {
@@ -369,6 +368,7 @@ int main(void)
 	            break;
 	    }
 
+	    // If 24v change color brightness to half
 	 } else {
 
 		    switch (button_state)
